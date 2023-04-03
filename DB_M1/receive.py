@@ -3,7 +3,9 @@ import os
 import sys
 
 from scapy.all import (
+    IP,
     TCP,
+    Ether,
     FieldLenField,
     FieldListField,
     IntField,
@@ -40,21 +42,28 @@ class IPOption_MRI(IPOption):
                                    IntField("", 0),
                                    length_from=lambda pkt:pkt.count*4) ]
 def handle_pkt(pkt):   
-    if Query in pkt:        
-        print("got a query packet")
-        pkt.show2()
+    if Query in pkt and pkt[Ether].dst != 'ff:ff:ff:ff:ff:ff':        
+        #print("got a query packet")
+        #pkt.show2()
         if pkt[Query].queryType == 0: #get
             if pkt[MultiVal].has_val == 0:
                 print("NULL")
             else:
                 print(pkt[MultiVal].value)
         elif pkt[Query].queryType == 1: #put
-            print("try to put(key= " + str(pkt[Query].key1) + ", value= " + str(pkt[Query].value))
+            print("try to put(key= " + str(pkt[Query].key1) + ", value= " + str(pkt[Query].value) + ")")
         elif pkt[Query].queryType == 2: #range, select
-            for i in range(len(pkt)):
-                if pkt[i].name == "MultiVal" and pkt[i].has_value == 1:
-                    print(pkt[i].value, end=" ")
-        print()
+            index = 0
+            result = list()
+            while(True):
+                layer = pkt.getlayer(index)
+                if layer == None:
+                    break
+                index += 1
+                if layer.name == "MultiVal" and layer.has_val == 1:
+                    result.append(layer.value)
+            if len(result) > 0:
+                print(result)  
         sys.stdout.flush()
     
 

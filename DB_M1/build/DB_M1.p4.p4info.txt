@@ -1,0 +1,160 @@
+pkg_info {
+  arch: "v1model"
+}
+tables {
+  preamble {
+    id: 37375156
+    name: "MyIngress.ipv4_lpm"
+    alias: "ipv4_lpm"
+  }
+  match_fields {
+    id: 1
+    name: "hdr.ipv4.dstAddr"
+    bitwidth: 32
+    match_type: LPM
+  }
+  action_refs {
+    id: 25652968
+  }
+  action_refs {
+    id: 24952588
+  }
+  action_refs {
+    id: 21257015
+  }
+  size: 1024
+}
+tables {
+  preamble {
+    id: 36270148
+    name: "MyIngress.operation"
+    alias: "operation"
+  }
+  match_fields {
+    id: 1
+    name: "hdr.query.queryType"
+    bitwidth: 2
+    match_type: EXACT
+  }
+  action_refs {
+    id: 25652968
+  }
+  action_refs {
+    id: 25395738
+  }
+  action_refs {
+    id: 32427501
+  }
+  action_refs {
+    id: 18891864
+  }
+  action_refs {
+    id: 21257015
+  }
+  size: 4
+}
+actions {
+  preamble {
+    id: 21257015
+    name: "NoAction"
+    alias: "NoAction"
+    annotations: "@noWarn(\"unused\")"
+  }
+}
+actions {
+  preamble {
+    id: 25652968
+    name: "MyIngress.drop"
+    alias: "drop"
+  }
+}
+actions {
+  preamble {
+    id: 32427501
+    name: "MyIngress.put"
+    alias: "put"
+  }
+}
+actions {
+  preamble {
+    id: 25395738
+    name: "MyIngress.get"
+    alias: "get"
+  }
+}
+actions {
+  preamble {
+    id: 18891864
+    name: "MyIngress.range_get"
+    alias: "range_get"
+  }
+}
+actions {
+  preamble {
+    id: 24952588
+    name: "MyIngress.set_nhop"
+    alias: "set_nhop"
+  }
+  params {
+    id: 1
+    name: "nhop_dmac"
+    bitwidth: 48
+  }
+  params {
+    id: 2
+    name: "nhop_ipv4"
+    bitwidth: 32
+  }
+  params {
+    id: 3
+    name: "port"
+    bitwidth: 9
+  }
+}
+registers {
+  preamble {
+    id: 373845279
+    name: "db_value"
+    alias: "db_value"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 32
+      }
+    }
+  }
+  size: 6150
+}
+registers {
+  preamble {
+    id: 373370081
+    name: "lastest_version"
+    alias: "lastest_version"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 32
+      }
+    }
+  }
+  size: 1025
+}
+registers {
+  preamble {
+    id: 383033684
+    name: "key_exist"
+    alias: "key_exist"
+  }
+  type_spec {
+    bitstring {
+      bit {
+        bitwidth: 1
+      }
+    }
+  }
+  size: 1025
+}
+type_info {
+}
