@@ -60,10 +60,14 @@ def handle_pkt(pkt):
                 if layer == None:
                     break
                 index += 1
-                if layer.name == "MultiVal" and layer.has_val == 1:
-                    result.append(layer.value)
-            if len(result) > 0:
-                print(result)  
+                if layer.name == "MultiVal":
+                    if layer.has_val == 1:
+                        result.append(layer.value)
+                    else:
+                        result.append("NULL")
+            if len(result) > 0 :
+                result.pop()
+            print(result)  
         sys.stdout.flush()
     
 

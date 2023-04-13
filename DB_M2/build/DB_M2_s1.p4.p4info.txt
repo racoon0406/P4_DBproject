@@ -97,16 +97,6 @@ actions {
   }
   params {
     id: 1
-    name: "nhop_dmac"
-    bitwidth: 48
-  }
-  params {
-    id: 2
-    name: "nhop_ipv4"
-    bitwidth: 32
-  }
-  params {
-    id: 3
     name: "port"
     bitwidth: 9
   }

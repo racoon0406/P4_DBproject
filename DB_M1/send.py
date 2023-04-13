@@ -80,7 +80,7 @@ def range_get(key1_in, key2_in, version_in):
         #print("sending on interface %s to %s" % (iface, str(addr)))
         pkt =  Ether(src=get_if_hwaddr(iface), dst='ff:ff:ff:ff:ff:ff', type=TYPE_QUERY)
         pkt = pkt / Query(queryType=2, key1=cur_key1, key2=cur_key2, version=version_in) / MultiVal() / IP(dst=addr) / TCP(dport=1234, sport=random.randint(49152,65535)) / query_text
-        pkt.show2()
+        #pkt.show2()
         sendp(pkt, iface=iface, verbose=False)
 
 def main():

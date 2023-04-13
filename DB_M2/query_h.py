@@ -13,9 +13,8 @@ TYPE_PINGPONG = 0x0803
 class PingPong(Packet):
     name = "PingPong"
     fields_desc=[ 
-        BitField("isPong", 0, 1),
-        BitField("padding", 0, 7),
-        IntField("queryCount", 0),   
+        BitField("type", 0, 2),  
+        BitField("padding", 0, 6), 
     ]
 
 class Query(Packet):
@@ -23,8 +22,11 @@ class Query(Packet):
     fields_desc=[ 
                 BitField("queryType", 0, 2),
                 BitField("isFeedback", 0, 1),
+                BitField("s1_dead", 0, 1),
+                BitField("s2_dead", 0, 1),
                 #Order matters: while dissecting key 1, can only concatenate tuple (not bytes) to tuple
-                BitField("padding", 0, 5),
+                BitField("padding", 0, 3),
+                IntField("responder", 0),
                 IntField("key1", 0),    	
                 IntField("key2", 0),
                 IntField("value", 0),    	
@@ -43,8 +45,9 @@ class MultiVal(Packet):
 
 
 bind_layers(Ether, PingPong, type = TYPE_PINGPONG)
+bind_layers(PingPong, Query, padding = 0)
 #When Scapy encounters an Ethernet type=0x0801, it will parse the next layer as "Query" header
-bind_layers(Ether, Query, type = TYPE_QUERY)
+#bind_layers(Ether, Query, type = TYPE_QUERY)
 bind_layers(Query, MultiVal, protocol = TYPE_MULTIVAL)
 bind_layers(MultiVal, IP, has_next = 0)
 bind_layers(MultiVal, MultiVal, has_next = 1)

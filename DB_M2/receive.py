@@ -41,18 +41,30 @@ class IPOption_MRI(IPOption):
                                    [],
                                    IntField("", 0),
                                    length_from=lambda pkt:pkt.count*4) ]
-def handle_pkt(pkt):   
-    if Query in pkt and pkt[Ether].dst != 'ff:ff:ff:ff:ff:ff':        
+def handle_pkt(pkt):  
+    #Spkt.show2() 
+    if PingPong in pkt and pkt[PingPong].type == 2: #PONG
+        print("received a PONG from switch " + str(pkt[Query].responder))
+    elif Query in pkt and pkt[Query].responder != 0:        
         #print("got a query packet")
         #pkt.show2()
+        if pkt[PingPong].s1_dead == 1:
+            print("switch 1 is dead")
+            return
+        if pkt[PingPong].s2_dead == 1:
+            print("switch 2 is dead")
+            return
+        #print("received REQUEST value(s) from " + str(pkt[Query].responder))
         if pkt[Query].queryType == 0: #get
+            print("get value from switch " + str(pkt[Query].responder))
             if pkt[MultiVal].has_val == 0:
                 print("NULL")
             else:
                 print(pkt[MultiVal].value)
         elif pkt[Query].queryType == 1: #put
-            print("try to put(key= " + str(pkt[Query].key1) + ", value= " + str(pkt[Query].value) + ")")
+            print("try to put(key= " + str(pkt[Query].key1) + ", value= " + str(pkt[Query].value) + ") to switch " + str(pkt[Query].responder))
         elif pkt[Query].queryType == 2: #range, select
+            print("get multiple values from switch " + str(pkt[Query].responder))
             index = 0
             result = list()
             while(True):
@@ -60,10 +72,14 @@ def handle_pkt(pkt):
                 if layer == None:
                     break
                 index += 1
-                if layer.name == "MultiVal" and layer.has_val == 1:
-                    result.append(layer.value)
-            if len(result) > 0:
-                print(result)  
+                if layer.name == "MultiVal":
+                    if layer.has_val == 1:
+                        result.append(layer.value)
+                    else:
+                        result.append("NULL")
+            if len(result) > 0 :
+                result.pop()
+            print(result)  
         sys.stdout.flush()
     
 

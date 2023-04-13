@@ -4,11 +4,14 @@
 
 //define constants for packet type
 #define PKT_INSTANCE_TYPE_INGRESS_CLONE 1
+#define FAILURE_BOUND 5
 
 //constants defined, 16 bits(like short)
 const bit<16> TYPE_IPV4 = 0x800;
 const bit<16> TYPE_QUERY = 0x0801;
 const bit<16> TYPE_MULTIVAL = 0x0802;
+const bit<16> TYPE_PINGPONG = 0x0803;
+
 const bit<32> REPORT_MIRROR_SESSION_ID = 500;
 
 /*************************************************************************
@@ -20,9 +23,13 @@ typedef bit<48> macAddr_t;
 typedef bit<32> ip4Addr_t;
 
 //define a register persistent through all packets
-// register<bit<32> >(1025 * 6) db_value; //version# is limited [0,5]
-// register<bit<32> >(1025) lastest_version; 
-// register<bit<1> >(1025) key_exist; //0: not exist
+//0: # of total requests
+//1: # of ping to s1, 3: # of pong from s1
+//2: # of ping to s2, 4: # of pong from s2
+register<bit<32> >(5) request_tracker; 
+//for every 15 request, set check_bit to 1
+register<bit<1> >(1) check_bit; 
+
 
 //headers defined
 //ethernet is usually the first header, all important
@@ -33,6 +40,11 @@ header ethernet_t {
     bit<16>   etherType;
 }
 
+header pingPong_t {
+    bit<2>   type; //0: normal packet, 1: PING, 2: PONG
+    bit<6>   padding; 
+}
+
 /*
  * This is a custom protocol header for the query packet. We'll use
  * ethertype 0x0801 for is (see parser)
@@ -40,8 +52,11 @@ header ethernet_t {
 header query_t {
     bit<2>   queryType; //4 types of requests
     bit<1>   isFeedback; //1: is feedback
+    bit<1>   s1_dead; //0: alive
+    bit<1>   s2_dead; 
     //BMv2 target only supports headers with fields totaling a multiple of 8 bits.
-    bit<5>   padding;
+    bit<3>   padding;
+    bit<32>  responder; //s1,s2,s3
     bit<32>  key1;
     bit<32>  key2;
     bit<32>  value;
@@ -98,11 +113,22 @@ struct metadata {
     bit<32> value;
     //load balancing
     bit<16> ecmp_select;
+
+    bit<32> num_request;
+    bit<32> num_ping_s1;
+    bit<32> num_pong_s1;
+    bit<32> num_ping_s2;
+    bit<32> num_pong_s2;
+
+    bit<1> check_bit;
+    bit<1> clone_ping; //need to clone to send PING
+    bit<1> clone_standby ; //need to clone to send to stand-by switch
 }
 
 //header stack, add all the headers you plan to use
 struct headers {
     ethernet_t   ethernet;
+    pingPong_t   pingPong;
     query_t      query;
     multiVal_t[1025]   multiVal; //header stack
     ipv4_t       ipv4;
@@ -129,9 +155,14 @@ parser MyParser(packet_in packet,
         //switch case
         transition select(hdr.ethernet.etherType) //get next header type(e.g. ipv4, ipv6)
         {
-            TYPE_QUERY: parse_query;
+            TYPE_PINGPONG: parse_pingPong;
             default: accept;
         }
+    }
+
+    state parse_pingPong{
+        packet.extract(hdr.pingPong);
+        transition parse_query;
     }
 
     state parse_query{
@@ -187,39 +218,111 @@ control MyIngress(inout headers hdr,
         mark_to_drop(standard_metadata);
     }
 
-    action clone_packet() {
-        clone(CloneType.I2E, REPORT_MIRROR_SESSION_ID);
-    }
-
     action set_ecmp_select() {
+        request_tracker.read(meta.num_request, 0);
+        request_tracker.read(meta.num_ping_s1, 1);
+        request_tracker.read(meta.num_ping_s2, 2);
+        request_tracker.read(meta.num_pong_s1, 3);
+        request_tracker.read(meta.num_pong_s2, 4);
+        check_bit.read(meta.check_bit, 0);
+
         if(hdr.query.isFeedback == 1) //feedback packet
         {
             meta.ecmp_select = 1;
-        } //request packet
-        else if(standard_metadata.instance_type == PKT_INSTANCE_TYPE_INGRESS_CLONE) //cloned 
+        } 
+        else if(hdr.pingPong.type == 2) //PONG packet
         {
-            meta.ecmp_select = 4;
+            //for every 15th request s0 receives
+            // if(meta.check_bit == 1)
+            // {
+            //     //check the number of PING and PONG
+            //     if(meta.num_ping_s1 - meta.num_pong_s1 > FAILURE_BOUND)
+            //     {
+            //         hdr.pingPong.s1_dead = 1;
+            //     }
+            //     if(meta.num_ping_s2 - meta.num_pong_s2 > FAILURE_BOUND)
+            //     {
+            //         hdr.pingPong.s2_dead = 1;
+            //     }
+            //     //reset 
+            //     meta.check_bit = 0;
+            // }
+            //update statistics
+            meta.num_pong_s1 = meta.num_pong_s1 + 1;
+            meta.num_pong_s2 = meta.num_pong_s2 + 1;
+
+            meta.ecmp_select = 1;
         }
-        else if(hdr.query.key1 <= 512) //key1 [0,512]
+        else //request packet
         {
-            meta.ecmp_select = 2;
+            //for every 10th request s0 receives
+            //P4 not support division...
+            //if(meta.num_request % 10 == 9)
+            if((meta.num_request & 0b1111) == 0b1001)
+            {
+                meta.clone_ping = 1;
+                //update statistics
+                meta.num_ping_s1 = meta.num_ping_s1 + 1;
+                meta.num_ping_s2 = meta.num_ping_s2 + 1;
+            }
+            //else if(meta.num_request % 15 == 14)
+            else if(((meta.num_request & 0b1111) == 0b1110) 
+            && (((meta.num_request >> 4) & 0b111) == 0b111))
+            {
+                // meta.check_bit = 1;
+                //check the number of PING and PONG
+                if(meta.num_ping_s1 - meta.num_pong_s1 > FAILURE_BOUND)
+                {
+                    hdr.query.s1_dead = 1;
+                }
+                if(meta.num_ping_s2 - meta.num_pong_s2 > FAILURE_BOUND)
+                {
+                    hdr.query.s2_dead = 1;
+                }
+            }
+
+            if(hdr.query.key1 <= 512) //key1 [0,512]
+            {
+                meta.ecmp_select = 2;
+            }
+            else //key1 (512,1024]
+            {
+                meta.ecmp_select = 3;
+            }
+
+            if(hdr.query.queryType == 1) //PUT 
+            {
+                meta.clone_standby = 1;
+            }
+            //update statistics
+            meta.num_request = meta.num_request + 1;
         }
-        else //key1 (512,1024]
-        {
-            meta.ecmp_select = 3;
-        }
+        //write back to tracker
+        request_tracker.write(0, meta.num_request);
+        request_tracker.write(1, meta.num_ping_s1);
+        request_tracker.write(2, meta.num_ping_s2);
+        request_tracker.write(3, meta.num_pong_s1);
+        request_tracker.write(4, meta.num_pong_s2);
+        check_bit.write(0, meta.check_bit);
     }
 
-    action set_nhop(macAddr_t nhop_dmac, ip4Addr_t nhop_ipv4, egressSpec_t port) {
+    action set_nhop(egressSpec_t port) {
         //decide which port of current switch to go to
         standard_metadata.egress_spec = port;
-        //previous destination(switch) is now our source
-        hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
-        //new destination address
-        hdr.ethernet.dstAddr = nhop_dmac;
-        hdr.ipv4.dstAddr = nhop_ipv4;
         //decrement ttl
         hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
+    }
+
+    //when incoming packet passes this table, it has diff actions based on its dstAddr
+    table ecmp_nhop {
+        key = {
+            meta.ecmp_select: exact;
+        }
+        actions = {
+            drop;
+            set_nhop;
+        }
+        size = 5; //be careful!!
     }
 
     //when incoming packet passes this table, it has diff actions based on its dstAddr
@@ -238,29 +341,26 @@ control MyIngress(inout headers hdr,
         default_action = NoAction();
     }
 
-    table ecmp_nhop {
-        key = {
-            meta.ecmp_select: exact;
-        }
-        actions = {
-            drop;
-            set_nhop;
-        }
-        size = 2;
-    }
-
     //ingress logic starts here
     apply {
-        if(hdr.ipv4.isValid() && hdr.ipv4.ttl > 0){  
-            if(hdr.query.queryType == 1) //PUT 
-            {
-                clone_packet();
-            }  
+        if(hdr.ipv4.isValid() && hdr.ipv4.ttl > 0){   
             ecmp_group.apply();   
-            ecmp_nhop.apply();                 
+            ecmp_nhop.apply();   
+            if(meta.clone_ping == 1)
+            {
+                //clone by session 2, will send clones(PING) to s1, s2
+                clone(CloneType.I2E, 2);  
+            }
+            if(meta.clone_standby == 1)
+            {
+                //clone by session 1, will send to s3(stand-by switch)
+                clone(CloneType.I2E, 1);
+            }
+                      
         }
     }
 }
+
 
 /*************************************************************************
 ****************  E G R E S S   P R O C E S S I N G   *******************
@@ -270,15 +370,11 @@ control MyEgress(inout headers hdr,
                  inout metadata meta,
                  inout standard_metadata_t standard_metadata) {
     apply { 
-        //'resubmit' can only be invoked in egress recirculate_preserving_field_list
-        //loop to get next key value for RANGE and SELECT
-        if(hdr.query.queryType >= 2 && hdr.query.key1 < hdr.query.key2)
-        {
-            //update the key for next loop
-            hdr.query.key1 = hdr.query.key1 + 1; 
-            recirculate_preserving_field_list(0);
+        if (standard_metadata.instance_type == PKT_INSTANCE_TYPE_INGRESS_CLONE
+            && standard_metadata.egress_spec != 4) {
+            //modify the clone packet into PING packet, not work as normal REQUEST packet
+            hdr.pingPong.type = 1;
         }
-
      }
 }
 
@@ -315,6 +411,7 @@ control MyDeparser(packet_out packet, in headers hdr) {
     apply {
         //order matters
         packet.emit(hdr.ethernet);
+        packet.emit(hdr.pingPong);
         packet.emit(hdr.query);
         packet.emit(hdr.multiVal);
         packet.emit(hdr.ipv4);

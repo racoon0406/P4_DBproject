@@ -6,6 +6,7 @@
 const bit<16> TYPE_IPV4 = 0x800;
 const bit<16> TYPE_QUERY = 0x0801;
 const bit<16> TYPE_MULTIVAL = 0x0802;
+const bit<16> TYPE_PINGPONG = 0x0803;
 
 /*************************************************************************
 *********************** H E A D E R S  ***********************************
@@ -16,7 +17,7 @@ typedef bit<48> macAddr_t;
 typedef bit<32> ip4Addr_t;
 
 //define a register persistent through all packets
-//s2: stores keys in (512, 1024]
+//s1: stores keys in [0, 512]
 register<bit<32> >(1025 * 6) db_value; //version# is limited [0,5]
 register<bit<32> >(1025) lastest_version; 
 register<bit<1> >(1025) key_exist; //0: not exist
@@ -30,6 +31,11 @@ header ethernet_t {
     bit<16>   etherType;
 }
 
+header pingPong_t {
+    bit<2>   type; //0: normal packet, 1: PING, 2: PONG
+    bit<6>   padding; 
+}
+
 /*
  * This is a custom protocol header for the query packet. We'll use
  * ethertype 0x0801 for is (see parser)
@@ -37,8 +43,11 @@ header ethernet_t {
 header query_t {
     bit<2>   queryType; //4 types of requests
     bit<1>   isFeedback; //1: is feedback
+    bit<1>   s1_dead; //0: alive
+    bit<1>   s2_dead; 
     //BMv2 target only supports headers with fields totaling a multiple of 8 bits.
-    bit<5>   padding;
+    bit<3>   padding;
+    bit<32>  responder; //s1,s2,s3
     bit<32>  key1;
     bit<32>  key2;
     bit<32>  value;
@@ -98,6 +107,7 @@ struct metadata {
 //header stack, add all the headers you plan to use
 struct headers {
     ethernet_t   ethernet;
+    pingPong_t   pingPong;
     query_t      query;
     multiVal_t[1025]   multiVal; //header stack
     ipv4_t       ipv4;
@@ -124,9 +134,14 @@ parser MyParser(packet_in packet,
         //switch case
         transition select(hdr.ethernet.etherType) //get next header type(e.g. ipv4, ipv6)
         {
-            TYPE_QUERY: parse_query;
+            TYPE_PINGPONG: parse_pingPong;
             default: accept;
         }
+    }
+
+    state parse_pingPong{
+        packet.extract(hdr.pingPong);
+        transition parse_query;
     }
 
     state parse_query{
@@ -204,8 +219,7 @@ control MyIngress(inout headers hdr,
         key_exist.write(hdr.query.key1, 1);
         lastest_version.write(hdr.query.key1, meta.version);
         db_value.write(hdr.query.key1 * 6 + meta.version, meta.value);        
-        hdr.query.isFeedback = 1;
-    }
+        }
     
 
     //GET request has (key1, version)
@@ -217,8 +231,7 @@ control MyIngress(inout headers hdr,
         if(meta.key_exist == 1 && hdr.query.version <= meta.version)
         {
             hdr.multiVal[0].has_val = 1;       
-        }   
-        hdr.query.isFeedback = 1;   
+        }      
     }
 
     //RANGE request has (key1, key2, version)
@@ -238,18 +251,12 @@ control MyIngress(inout headers hdr,
         if(hdr.query.key1 < hdr.query.key2)
         {           
             hdr.query.count = hdr.query.count + 1; 
-        }  
-        hdr.query.isFeedback = 1;     
+        }
     }
 
-    action set_nhop(macAddr_t nhop_dmac, ip4Addr_t nhop_ipv4, egressSpec_t port) {
+    action set_nhop(egressSpec_t port) {
         //decide which port of current switch to go to
         standard_metadata.egress_spec = port;
-        //previous destination(switch) is now our source
-        hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
-        //new destination address
-        hdr.ethernet.dstAddr = nhop_dmac;
-        hdr.ipv4.dstAddr = nhop_ipv4;
         //decrement ttl
         hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
     }
@@ -290,7 +297,17 @@ control MyIngress(inout headers hdr,
     //ingress logic starts here
     apply {
         if(hdr.ipv4.isValid() && hdr.ipv4.ttl > 0){
-            operation.apply();     
+            if(hdr.pingPong.type == 0) //this is a normal REQUEST
+            {
+                hdr.query.isFeedback = 1;
+                operation.apply();  
+            }  
+            else //PING
+            {
+                //modify to PONG
+                hdr.pingPong.type = 2;
+            }      
+            hdr.query.responder = 2;   
             ipv4_lpm.apply();                 
         }
     }
@@ -306,7 +323,7 @@ control MyEgress(inout headers hdr,
     apply { 
         //'resubmit' can only be invoked in egress recirculate_preserving_field_list
         //loop to get next key value for RANGE and SELECT
-        if(hdr.query.queryType >= 2 && hdr.query.key1 < hdr.query.key2)
+        if(hdr.pingPong.type == 0 && hdr.query.queryType >= 2 && hdr.query.key1 < hdr.query.key2)
         {
             //update the key for next loop
             hdr.query.key1 = hdr.query.key1 + 1; 
@@ -349,6 +366,7 @@ control MyDeparser(packet_out packet, in headers hdr) {
     apply {
         //order matters
         packet.emit(hdr.ethernet);
+        packet.emit(hdr.pingPong);
         packet.emit(hdr.query);
         packet.emit(hdr.multiVal);
         packet.emit(hdr.ipv4);

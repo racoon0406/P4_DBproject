@@ -32,9 +32,8 @@ header ethernet_t {
 }
 
 header pingPong_t {
-    bit<1>   isPong; //0: ping  1: pong
-    bit<7>   padding;
-    bit<32>  seqNumber;
+    bit<2>   type; //0: normal packet, 1: PING, 2: PONG
+    bit<6>   padding; 
 }
 
 /*
@@ -44,8 +43,11 @@ header pingPong_t {
 header query_t {
     bit<2>   queryType; //4 types of requests
     bit<1>   isFeedback; //1: is feedback
+    bit<1>   s1_dead; //0: alive
+    bit<1>   s2_dead; 
     //BMv2 target only supports headers with fields totaling a multiple of 8 bits.
-    bit<5>   padding;
+    bit<3>   padding;
+    bit<32>  responder; //s1,s2,s3
     bit<32>  key1;
     bit<32>  key2;
     bit<32>  value;
@@ -100,8 +102,6 @@ struct metadata {
     bit<32> version;
     //to read value
     bit<32> value;
-    //ping or pong packet
-    bit<1> is_ping;
 }
 
 //header stack, add all the headers you plan to use
@@ -135,7 +135,6 @@ parser MyParser(packet_in packet,
         transition select(hdr.ethernet.etherType) //get next header type(e.g. ipv4, ipv6)
         {
             TYPE_PINGPONG: parse_pingPong;
-            TYPE_QUERY: parse_query;
             default: accept;
         }
     }
@@ -220,7 +219,6 @@ control MyIngress(inout headers hdr,
         key_exist.write(hdr.query.key1, 1);
         lastest_version.write(hdr.query.key1, meta.version);
         db_value.write(hdr.query.key1 * 6 + meta.version, meta.value);        
-        hdr.query.isFeedback = 1;
         }
     
 
@@ -234,7 +232,6 @@ control MyIngress(inout headers hdr,
         {
             hdr.multiVal[0].has_val = 1;       
         }      
-        hdr.query.isFeedback = 1;
     }
 
     //RANGE request has (key1, key2, version)
@@ -255,17 +252,11 @@ control MyIngress(inout headers hdr,
         {           
             hdr.query.count = hdr.query.count + 1; 
         }
-        hdr.query.isFeedback = 1;
     }
 
-    action set_nhop(macAddr_t nhop_dmac, ip4Addr_t nhop_ipv4, egressSpec_t port) {
+    action set_nhop(egressSpec_t port) {
         //decide which port of current switch to go to
         standard_metadata.egress_spec = port;
-        //previous destination(switch) is now our source
-        hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
-        //new destination address
-        hdr.ethernet.dstAddr = nhop_dmac;
-        hdr.ipv4.dstAddr = nhop_ipv4;
         //decrement ttl
         hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
     }
@@ -306,12 +297,17 @@ control MyIngress(inout headers hdr,
     //ingress logic starts here
     apply {
         if(hdr.ipv4.isValid() && hdr.ipv4.ttl > 0){
-            //handle ping pong
-            is_ping.read(meta.is_ping, !hdr.pingPong.isPong);
-            
-            
-
-            operation.apply();     
+            if(hdr.pingPong.type == 0) //this is a normal REQUEST
+            {
+                hdr.query.isFeedback = 1;
+                operation.apply();  
+            }  
+            else //PING
+            {
+                //modify to PONG
+                hdr.pingPong.type = 2;
+            }  
+            hdr.query.responder = 1;     
             ipv4_lpm.apply();                 
         }
     }
@@ -327,7 +323,7 @@ control MyEgress(inout headers hdr,
     apply { 
         //'resubmit' can only be invoked in egress recirculate_preserving_field_list
         //loop to get next key value for RANGE and SELECT
-        if(hdr.query.queryType >= 2 && hdr.query.key1 < hdr.query.key2)
+        if(hdr.pingPong.type == 0 && hdr.query.queryType >= 2 && hdr.query.key1 < hdr.query.key2)
         {
             //update the key for next loop
             hdr.query.key1 = hdr.query.key1 + 1; 
