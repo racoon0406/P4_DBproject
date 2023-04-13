@@ -307,6 +307,7 @@ control MyIngress(inout headers hdr,
                 //modify to PONG
                 hdr.pingPong.type = 2;
             }  
+            //respond from switch 1
             hdr.query.responder = 1;     
             ipv4_lpm.apply();                 
         }

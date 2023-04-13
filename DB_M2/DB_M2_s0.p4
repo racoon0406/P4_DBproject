@@ -27,8 +27,7 @@ typedef bit<32> ip4Addr_t;
 //1: # of ping to s1, 3: # of pong from s1
 //2: # of ping to s2, 4: # of pong from s2
 register<bit<32> >(5) request_tracker; 
-//for every 15 request, set check_bit to 1
-register<bit<1> >(1) check_bit; 
+
 
 
 //headers defined
@@ -52,11 +51,11 @@ header pingPong_t {
 header query_t {
     bit<2>   queryType; //4 types of requests
     bit<1>   isFeedback; //1: is feedback
-    bit<1>   s1_dead; //0: alive
+    bit<1>   s1_dead; //0: alive, 1: switch1 is dead
     bit<1>   s2_dead; 
     //BMv2 target only supports headers with fields totaling a multiple of 8 bits.
     bit<3>   padding;
-    bit<32>  responder; //s1,s2,s3
+    bit<32>  responder; //who returns the packet: s1,s2,s3
     bit<32>  key1;
     bit<32>  key2;
     bit<32>  value;
@@ -113,16 +112,15 @@ struct metadata {
     bit<32> value;
     //load balancing
     bit<16> ecmp_select;
-
+    //to read request_tracker
     bit<32> num_request;
     bit<32> num_ping_s1;
     bit<32> num_pong_s1;
     bit<32> num_ping_s2;
     bit<32> num_pong_s2;
 
-    bit<1> check_bit;
-    bit<1> clone_ping; //need to clone to send PING
-    bit<1> clone_standby ; //need to clone to send to stand-by switch
+    bit<1> clone_ping; //flag, indicating we need 2 clones to send PING
+    bit<1> clone_standby ; //flag, indicating we need 1 clone to send to stand-by switch
 }
 
 //header stack, add all the headers you plan to use
@@ -224,7 +222,6 @@ control MyIngress(inout headers hdr,
         request_tracker.read(meta.num_ping_s2, 2);
         request_tracker.read(meta.num_pong_s1, 3);
         request_tracker.read(meta.num_pong_s2, 4);
-        check_bit.read(meta.check_bit, 0);
 
         if(hdr.query.isFeedback == 1) //feedback packet
         {
@@ -232,21 +229,6 @@ control MyIngress(inout headers hdr,
         } 
         else if(hdr.pingPong.type == 2) //PONG packet
         {
-            //for every 15th request s0 receives
-            // if(meta.check_bit == 1)
-            // {
-            //     //check the number of PING and PONG
-            //     if(meta.num_ping_s1 - meta.num_pong_s1 > FAILURE_BOUND)
-            //     {
-            //         hdr.pingPong.s1_dead = 1;
-            //     }
-            //     if(meta.num_ping_s2 - meta.num_pong_s2 > FAILURE_BOUND)
-            //     {
-            //         hdr.pingPong.s2_dead = 1;
-            //     }
-            //     //reset 
-            //     meta.check_bit = 0;
-            // }
             //update statistics
             meta.num_pong_s1 = meta.num_pong_s1 + 1;
             meta.num_pong_s2 = meta.num_pong_s2 + 1;
@@ -256,10 +238,11 @@ control MyIngress(inout headers hdr,
         else //request packet
         {
             //for every 10th request s0 receives
-            //P4 not support division...
+            //P4 not support modulo...
             //if(meta.num_request % 10 == 9)
             if((meta.num_request & 0b1111) == 0b1001)
             {
+                //flag, clone later
                 meta.clone_ping = 1;
                 //update statistics
                 meta.num_ping_s1 = meta.num_ping_s1 + 1;
@@ -269,7 +252,6 @@ control MyIngress(inout headers hdr,
             else if(((meta.num_request & 0b1111) == 0b1110) 
             && (((meta.num_request >> 4) & 0b111) == 0b111))
             {
-                // meta.check_bit = 1;
                 //check the number of PING and PONG
                 if(meta.num_ping_s1 - meta.num_pong_s1 > FAILURE_BOUND)
                 {
@@ -292,6 +274,7 @@ control MyIngress(inout headers hdr,
 
             if(hdr.query.queryType == 1) //PUT 
             {
+                //flag, clone later
                 meta.clone_standby = 1;
             }
             //update statistics
@@ -303,7 +286,6 @@ control MyIngress(inout headers hdr,
         request_tracker.write(2, meta.num_ping_s2);
         request_tracker.write(3, meta.num_pong_s1);
         request_tracker.write(4, meta.num_pong_s2);
-        check_bit.write(0, meta.check_bit);
     }
 
     action set_nhop(egressSpec_t port) {

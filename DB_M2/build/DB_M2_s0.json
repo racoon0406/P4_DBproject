@@ -13,10 +13,9 @@
         ["userMetadata.num_pong_s1", 32, false],
         ["userMetadata.num_ping_s2", 32, false],
         ["userMetadata.num_pong_s2", 32, false],
-        ["userMetadata.check_bit", 1, false],
         ["userMetadata.clone_ping", 1, false],
         ["userMetadata.clone_standby", 1, false],
-        ["_padding_0", 4, false]
+        ["_padding_0", 5, false]
       ]
     },
     {
@@ -7588,7 +7587,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "DB_M2_s0.p4",
-        "line" : 410,
+        "line" : 392,
         "column" : 8,
         "source_fragment" : "MyDeparser"
       },
@@ -7610,18 +7609,6 @@
       },
       "size" : 5,
       "bitwidth" : 32
-    },
-    {
-      "name" : "check_bit",
-      "id" : 1,
-      "source_info" : {
-        "filename" : "DB_M2_s0.p4",
-        "line" : 31,
-        "column" : 21,
-        "source_fragment" : "check_bit"
-      },
-      "size" : 1,
-      "bitwidth" : 1
     }
   ],
   "calculations" : [
@@ -7630,7 +7617,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "DB_M2_s0.p4",
-        "line" : 387,
+        "line" : 369,
         "column" : 8,
         "source_fragment" : "update_checksum( ..."
       },
@@ -7712,7 +7699,7 @@
           ],
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 218,
+            "line" : 216,
             "column" : 8,
             "source_fragment" : "mark_to_drop(standard_metadata)"
           }
@@ -7734,7 +7721,7 @@
           ],
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 218,
+            "line" : 216,
             "column" : 8,
             "source_fragment" : "mark_to_drop(standard_metadata)"
           }
@@ -7764,7 +7751,7 @@
           ],
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 222,
+            "line" : 220,
             "column" : 8,
             "source_fragment" : "request_tracker.read(meta.num_request, 0)"
           }
@@ -7787,7 +7774,7 @@
           ],
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 223,
+            "line" : 221,
             "column" : 8,
             "source_fragment" : "request_tracker.read(meta.num_ping_s1, 1)"
           }
@@ -7810,7 +7797,7 @@
           ],
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 224,
+            "line" : 222,
             "column" : 8,
             "source_fragment" : "request_tracker.read(meta.num_ping_s2, 2)"
           }
@@ -7833,7 +7820,7 @@
           ],
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 225,
+            "line" : 223,
             "column" : 8,
             "source_fragment" : "request_tracker.read(meta.num_pong_s1, 3)"
           }
@@ -7856,32 +7843,9 @@
           ],
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 226,
+            "line" : 224,
             "column" : 8,
             "source_fragment" : "request_tracker.read(meta.num_pong_s2, 4)"
-          }
-        },
-        {
-          "op" : "register_read",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["scalars", "userMetadata.check_bit"]
-            },
-            {
-              "type" : "register_array",
-              "value" : "check_bit"
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0x00000000"
-            }
-          ],
-          "source_info" : {
-            "filename" : "DB_M2_s0.p4",
-            "line" : 227,
-            "column" : 8,
-            "source_fragment" : "check_bit.read(meta.check_bit, 0)"
           }
         },
         {
@@ -9220,7 +9184,7 @@
           ],
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 301,
+            "line" : 284,
             "column" : 8,
             "source_fragment" : "request_tracker.write(0, meta.num_request)"
           }
@@ -9243,7 +9207,7 @@
           ],
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 302,
+            "line" : 285,
             "column" : 8,
             "source_fragment" : "request_tracker.write(1, meta.num_ping_s1)"
           }
@@ -9266,7 +9230,7 @@
           ],
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 303,
+            "line" : 286,
             "column" : 8,
             "source_fragment" : "request_tracker.write(2, meta.num_ping_s2)"
           }
@@ -9289,7 +9253,7 @@
           ],
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 304,
+            "line" : 287,
             "column" : 8,
             "source_fragment" : "request_tracker.write(3, meta.num_pong_s1)"
           }
@@ -9312,32 +9276,9 @@
           ],
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 305,
+            "line" : 288,
             "column" : 8,
             "source_fragment" : "request_tracker.write(4, meta.num_pong_s2)"
-          }
-        },
-        {
-          "op" : "register_write",
-          "parameters" : [
-            {
-              "type" : "register_array",
-              "value" : "check_bit"
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0x00000000"
-            },
-            {
-              "type" : "field",
-              "value" : ["scalars", "userMetadata.check_bit"]
-            }
-          ],
-          "source_info" : {
-            "filename" : "DB_M2_s0.p4",
-            "line" : 306,
-            "column" : 8,
-            "source_fragment" : "check_bit.write(0, meta.check_bit)"
           }
         }
       ]
@@ -9366,7 +9307,7 @@
           ],
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 311,
+            "line" : 293,
             "column" : 8,
             "source_fragment" : "standard_metadata.egress_spec = port"
           }
@@ -9408,7 +9349,7 @@
           ],
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 313,
+            "line" : 295,
             "column" : 8,
             "source_fragment" : "hdr.ipv4.ttl = hdr.ipv4.ttl - 1"
           }
@@ -9416,7 +9357,7 @@
       ]
     },
     {
-      "name" : "DB_M2_s0l352",
+      "name" : "DB_M2_s0l334",
       "id" : 6,
       "runtime_data" : [],
       "primitives" : [
@@ -9434,7 +9375,7 @@
           ],
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 352,
+            "line" : 334,
             "column" : 16,
             "source_fragment" : "clone(CloneType.I2E, 2)"
           }
@@ -9442,7 +9383,7 @@
       ]
     },
     {
-      "name" : "DB_M2_s0l357",
+      "name" : "DB_M2_s0l339",
       "id" : 7,
       "runtime_data" : [],
       "primitives" : [
@@ -9460,7 +9401,7 @@
           ],
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 357,
+            "line" : 339,
             "column" : 16,
             "source_fragment" : "clone(CloneType.I2E, 1)"
           }
@@ -9468,7 +9409,7 @@
       ]
     },
     {
-      "name" : "DB_M2_s0l376",
+      "name" : "DB_M2_s0l358",
       "id" : 8,
       "runtime_data" : [],
       "primitives" : [
@@ -9486,7 +9427,7 @@
           ],
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 376,
+            "line" : 358,
             "column" : 12,
             "source_fragment" : "hdr.pingPong.type = 1"
           }
@@ -9500,7 +9441,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "DB_M2_s0.p4",
-        "line" : 214,
+        "line" : 212,
         "column" : 8,
         "source_fragment" : "MyIngress"
       },
@@ -9511,7 +9452,7 @@
           "id" : 0,
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 329,
+            "line" : 311,
             "column" : 10,
             "source_fragment" : "ecmp_group"
           },
@@ -9549,7 +9490,7 @@
           "id" : 1,
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 317,
+            "line" : 299,
             "column" : 10,
             "source_fragment" : "ecmp_nhop"
           },
@@ -9583,11 +9524,11 @@
           }
         },
         {
-          "name" : "tbl_DB_M2_s0l352",
+          "name" : "tbl_DB_M2_s0l334",
           "id" : 2,
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 352,
+            "line" : 334,
             "column" : 16,
             "source_fragment" : "clone(CloneType.I2E, 2)"
           },
@@ -9599,10 +9540,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [6],
-          "actions" : ["DB_M2_s0l352"],
+          "actions" : ["DB_M2_s0l334"],
           "base_default_next" : "node_7",
           "next_tables" : {
-            "DB_M2_s0l352" : "node_7"
+            "DB_M2_s0l334" : "node_7"
           },
           "default_entry" : {
             "action_id" : 6,
@@ -9612,11 +9553,11 @@
           }
         },
         {
-          "name" : "tbl_DB_M2_s0l357",
+          "name" : "tbl_DB_M2_s0l339",
           "id" : 3,
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 357,
+            "line" : 339,
             "column" : 16,
             "source_fragment" : "clone(CloneType.I2E, 1)"
           },
@@ -9628,10 +9569,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [7],
-          "actions" : ["DB_M2_s0l357"],
+          "actions" : ["DB_M2_s0l339"],
           "base_default_next" : null,
           "next_tables" : {
-            "DB_M2_s0l357" : null
+            "DB_M2_s0l339" : null
           },
           "default_entry" : {
             "action_id" : 7,
@@ -9648,7 +9589,7 @@
           "id" : 0,
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 346,
+            "line" : 328,
             "column" : 11,
             "source_fragment" : "hdr.ipv4.isValid() && hdr.ipv4.ttl > 0"
           },
@@ -9691,7 +9632,7 @@
           "id" : 1,
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 349,
+            "line" : 331,
             "column" : 15,
             "source_fragment" : "meta.clone_ping == 1"
           },
@@ -9709,7 +9650,7 @@
               }
             }
           },
-          "true_next" : "tbl_DB_M2_s0l352",
+          "true_next" : "tbl_DB_M2_s0l334",
           "false_next" : "node_7"
         },
         {
@@ -9717,7 +9658,7 @@
           "id" : 2,
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 354,
+            "line" : 336,
             "column" : 15,
             "source_fragment" : "meta.clone_standby == 1"
           },
@@ -9736,7 +9677,7 @@
             }
           },
           "false_next" : null,
-          "true_next" : "tbl_DB_M2_s0l357"
+          "true_next" : "tbl_DB_M2_s0l339"
         }
       ]
     },
@@ -9745,18 +9686,18 @@
       "id" : 1,
       "source_info" : {
         "filename" : "DB_M2_s0.p4",
-        "line" : 369,
+        "line" : 351,
         "column" : 8,
         "source_fragment" : "MyEgress"
       },
       "init_table" : "node_11",
       "tables" : [
         {
-          "name" : "tbl_DB_M2_s0l376",
+          "name" : "tbl_DB_M2_s0l358",
           "id" : 4,
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 376,
+            "line" : 358,
             "column" : 30,
             "source_fragment" : "="
           },
@@ -9768,10 +9709,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [8],
-          "actions" : ["DB_M2_s0l376"],
+          "actions" : ["DB_M2_s0l358"],
           "base_default_next" : null,
           "next_tables" : {
-            "DB_M2_s0l376" : null
+            "DB_M2_s0l358" : null
           },
           "default_entry" : {
             "action_id" : 8,
@@ -9788,7 +9729,7 @@
           "id" : 3,
           "source_info" : {
             "filename" : "DB_M2_s0.p4",
-            "line" : 373,
+            "line" : 355,
             "column" : 12,
             "source_fragment" : "standard_metadata.instance_type == 1 ..."
           },
@@ -9827,7 +9768,7 @@
             }
           },
           "false_next" : null,
-          "true_next" : "tbl_DB_M2_s0l376"
+          "true_next" : "tbl_DB_M2_s0l358"
         }
       ]
     }
@@ -9838,7 +9779,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "DB_M2_s0.p4",
-        "line" : 387,
+        "line" : 369,
         "column" : 8,
         "source_fragment" : "update_checksum( ..."
       },

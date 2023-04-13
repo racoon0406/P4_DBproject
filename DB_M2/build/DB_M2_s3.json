@@ -7574,7 +7574,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "DB_M2_s3.p4",
-        "line" : 357,
+        "line" : 358,
         "column" : 8,
         "source_fragment" : "MyDeparser"
       },
@@ -7628,7 +7628,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "DB_M2_s3.p4",
-        "line" : 334,
+        "line" : 335,
         "column" : 8,
         "source_fragment" : "update_checksum( ..."
       },
@@ -8835,7 +8835,7 @@
       ]
     },
     {
-      "name" : "DB_M2_s3l302",
+      "name" : "DB_M2_s3l303",
       "id" : 9,
       "runtime_data" : [],
       "primitives" : [
@@ -8853,7 +8853,7 @@
           ],
           "source_info" : {
             "filename" : "DB_M2_s3.p4",
-            "line" : 302,
+            "line" : 303,
             "column" : 12,
             "source_fragment" : "hdr.query.responder = 3"
           }
@@ -8861,7 +8861,7 @@
       ]
     },
     {
-      "name" : "DB_M2_s3l321",
+      "name" : "DB_M2_s3l322",
       "id" : 10,
       "runtime_data" : [],
       "primitives" : [
@@ -8902,7 +8902,7 @@
           ],
           "source_info" : {
             "filename" : "DB_M2_s3.p4",
-            "line" : 321,
+            "line" : 322,
             "column" : 12,
             "source_fragment" : "hdr.query.key1 = hdr.query.key1 + 1"
           }
@@ -8917,7 +8917,7 @@
           ],
           "source_info" : {
             "filename" : "DB_M2_s3.p4",
-            "line" : 322,
+            "line" : 323,
             "column" : 12,
             "source_fragment" : "recirculate_preserving_field_list(0)"
           }
@@ -8991,13 +8991,13 @@
           "direct_meters" : null,
           "action_ids" : [3, 5, 4, 6, 1],
           "actions" : ["MyIngress.drop", "MyIngress.get", "MyIngress.put", "MyIngress.range_get", "NoAction"],
-          "base_default_next" : "tbl_DB_M2_s3l302",
+          "base_default_next" : "tbl_DB_M2_s3l303",
           "next_tables" : {
-            "MyIngress.drop" : "tbl_DB_M2_s3l302",
-            "MyIngress.get" : "tbl_DB_M2_s3l302",
-            "MyIngress.put" : "tbl_DB_M2_s3l302",
-            "MyIngress.range_get" : "tbl_DB_M2_s3l302",
-            "NoAction" : "tbl_DB_M2_s3l302"
+            "MyIngress.drop" : "tbl_DB_M2_s3l303",
+            "MyIngress.get" : "tbl_DB_M2_s3l303",
+            "MyIngress.put" : "tbl_DB_M2_s3l303",
+            "MyIngress.range_get" : "tbl_DB_M2_s3l303",
+            "NoAction" : "tbl_DB_M2_s3l303"
           },
           "default_entry" : {
             "action_id" : 1,
@@ -9007,11 +9007,11 @@
           }
         },
         {
-          "name" : "tbl_DB_M2_s3l302",
+          "name" : "tbl_DB_M2_s3l303",
           "id" : 2,
           "source_info" : {
             "filename" : "DB_M2_s3.p4",
-            "line" : 302,
+            "line" : 303,
             "column" : 32,
             "source_fragment" : "="
           },
@@ -9023,10 +9023,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [9],
-          "actions" : ["DB_M2_s3l302"],
+          "actions" : ["DB_M2_s3l303"],
           "base_default_next" : "MyIngress.ipv4_lpm",
           "next_tables" : {
-            "DB_M2_s3l302" : "MyIngress.ipv4_lpm"
+            "DB_M2_s3l303" : "MyIngress.ipv4_lpm"
           },
           "default_entry" : {
             "action_id" : 9,
@@ -9126,18 +9126,18 @@
       "id" : 1,
       "source_info" : {
         "filename" : "DB_M2_s3.p4",
-        "line" : 312,
+        "line" : 313,
         "column" : 8,
         "source_fragment" : "MyEgress"
       },
       "init_table" : "node_9",
       "tables" : [
         {
-          "name" : "tbl_DB_M2_s3l321",
+          "name" : "tbl_DB_M2_s3l322",
           "id" : 4,
           "source_info" : {
             "filename" : "DB_M2_s3.p4",
-            "line" : 321,
+            "line" : 322,
             "column" : 27,
             "source_fragment" : "= hdr.query.key1 + 1; ..."
           },
@@ -9149,10 +9149,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [10],
-          "actions" : ["DB_M2_s3l321"],
+          "actions" : ["DB_M2_s3l322"],
           "base_default_next" : null,
           "next_tables" : {
-            "DB_M2_s3l321" : null
+            "DB_M2_s3l322" : null
           },
           "default_entry" : {
             "action_id" : 10,
@@ -9169,7 +9169,7 @@
           "id" : 1,
           "source_info" : {
             "filename" : "DB_M2_s3.p4",
-            "line" : 318,
+            "line" : 319,
             "column" : 11,
             "source_fragment" : "hdr.query.queryType >= 2 && hdr.query.key1 < hdr.query.key2"
           },
@@ -9208,7 +9208,7 @@
             }
           },
           "false_next" : null,
-          "true_next" : "tbl_DB_M2_s3l321"
+          "true_next" : "tbl_DB_M2_s3l322"
         }
       ]
     }
@@ -9219,7 +9219,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "DB_M2_s3.p4",
-        "line" : 334,
+        "line" : 335,
         "column" : 8,
         "source_fragment" : "update_checksum( ..."
       },

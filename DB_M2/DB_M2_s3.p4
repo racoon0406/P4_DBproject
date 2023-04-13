@@ -299,6 +299,7 @@ control MyIngress(inout headers hdr,
         if(hdr.ipv4.isValid() && hdr.ipv4.ttl > 0){          
             hdr.query.isFeedback = 1;
             operation.apply();    
+            //respond from switch 3
             hdr.query.responder = 3;    
             ipv4_lpm.apply();                 
         }

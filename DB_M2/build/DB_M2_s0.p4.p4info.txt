@@ -98,20 +98,5 @@ registers {
   }
   size: 5
 }
-registers {
-  preamble {
-    id: 376909952
-    name: "check_bit"
-    alias: "check_bit"
-  }
-  type_spec {
-    bitstring {
-      bit {
-        bitwidth: 1
-      }
-    }
-  }
-  size: 1
-}
 type_info {
 }
