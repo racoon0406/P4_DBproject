@@ -1,0 +1,15 @@
+# compiled bytecode files (.pyc)
+__pychache__/
+
+# unused files
+\#Makefile#
+
+# pcap files
+pcaps/
+
+# log files
+logs/
+
+# build files
+build/
+pod-topo/

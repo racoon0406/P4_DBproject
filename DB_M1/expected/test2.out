@@ -1,0 +1,46 @@
+sniffing on eth0
+try to put(key= 10, value= 100)
+try to put(key= 10, value= 101)
+try to put(key= 10, value= 102)
+try to put(key= 10, value= 103)
+try to put(key= 10, value= 104)
+try to put(key= 10, value= 105)
+try to put(key= 11, value= 110)
+try to put(key= 11, value= 111)
+try to put(key= 11, value= 112)
+try to put(key= 12, value= 120)
+try to put(key= 12, value= 121)
+try to put(key= 12, value= 122)
+try to put(key= 512, value= 51200)
+try to put(key= 512, value= 51201)
+try to put(key= 512, value= 51202)
+try to put(key= 513, value= 51300)
+try to put(key= 513, value= 51301)
+try to put(key= 513, value= 51302)
+try to put(key= 10, value= 106)
+try to put(key= 10, value= 107)
+100
+101
+102
+103
+104
+105
+110
+111
+112
+120
+121
+122
+51200
+51201
+51202
+51300
+51301
+51302
+NULL
+NULL
+NULL
+NULL
+NULL
+NULL
+NULL
