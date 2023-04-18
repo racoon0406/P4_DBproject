@@ -31,10 +31,12 @@ The key range access for Alice and Bob is detailed below:
 - `s2-runtime.json`
 - `s3-runtime.json`
 
-### Test scripts
+### Test Scripts and Output Files
 - `run_tests.sh`: Test runner that runs all tests below
 - `test1.sh`: Tests versioned PUT and GET requests with ACL, focusing on clients with different levels of key range read/write access
 - `test2.sh`: Tests versioned RANGE request with ACL, and versioned SELECT requests with ACL, focusing on clients with different levels of key range read/write access
+- `expected/`: Directory that contains the expected output files, `test*.out`, for each respective test
+- `output/`: Directory that stores the test outputs generated upon the completion of each test run
 
 ## Run Test Script
 1. In a shell with the required VM image installed, navigate to `/DB_M3` directory and run:
