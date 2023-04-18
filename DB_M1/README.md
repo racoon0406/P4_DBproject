@@ -15,12 +15,39 @@ For this milestone, we have implemented in-network key/value store in a single P
 - `topology.json`
 - `s1-runtime.json`
 
-### Test Scripts
-- TODO
+### Test scripts
+- `run_tests.sh`
+- `test1.sh`
+- `test2.sh`
+- `test3.sh`
 
+## Run Test Script
+1. In a shell with the required VM image installed, navigate to `/DB_M1` directory and run:
+    ```bash
+    make
+    ```
+2. Open a terminal for **h1** in the mininet environment 
+    ```bash
+    xterm h1
+    ```
+3. In the terminal for **h1**, make sure to give the tester executable permission by running:
+    ```bash
+    chmod +x run_tests.sh
+    ```
+4. Run tester:
+    ```bash
+    ./run_tests.sh
+    ```
+   It will execute all tests `test*.sh` and prints out a summary in the end.   
 
-## Run Test Scripts
-TODO
+5. Type `exit` to leave each xterm and the mininet environment. Then, to stop mininet:  
+    ```bash
+    make stop
+    ```
+   To delete all `.pcap` files, build files, and logs:  
+    ```bash
+    make clean
+    ```
 
 ## Run Manually
 1. In a shell with the required VM image installed, navigate to `/DB_M1` directory and run:
