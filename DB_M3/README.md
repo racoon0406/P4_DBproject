@@ -38,14 +38,13 @@ The key range access for Alice and Bob is detailed below:
 TODO
 
 ## Run Manually
-To send and receive the data from and to **h1**, please run the following script:
-1. In a shell with the required VM image installed, navigate to `/DB_M` directory and run:
+1. In a shell with the required VM image installed, navigate to `/DB_M3` directory and run:
     ```bash
     make
     ```
 2. Open terminals for sender and receivers in the mininet environment 
     ```bash
-    xterm h1 h1 h1
+    xterm h1 h1
     ```
 
 3. In one terminal of **h1**, start the receiver by running:
@@ -79,7 +78,7 @@ To send and receive the data from and to **h1**, please run the following script
     ```bash
     make stop
     ```
-   To delete all `.pcaps`, build files, and logs:  
+   To delete all `.pcap` files, build files, and logs:  
     ```bash
     make clean
     ```

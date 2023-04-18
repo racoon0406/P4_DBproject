@@ -23,7 +23,6 @@ For this milestone, we have implemented in-network key/value store in a single P
 TODO
 
 ## Run Manually
-To send and receive the data from and to **h1**, please run the following script:
 1. In a shell with the required VM image installed, navigate to `/DB_M1` directory and run:
     ```bash
     make
@@ -64,7 +63,7 @@ To send and receive the data from and to **h1**, please run the following script
     ```bash
     make stop
     ```
-   To delete all `.pcaps`, build files, and logs:  
+   To delete all `.pcap` files, build files, and logs:  
     ```bash
     make clean
     ```
