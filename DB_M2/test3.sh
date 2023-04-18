@@ -1,6 +1,7 @@
 #!/bin/bash
 # test3: tests range requests with versioning 
 #        and select requests with versioning and different predicates
+#        also tests load balancing and failure detection behavior (PING/PONG)
 
 # range
 # keys in [1,4] first version

@@ -16,25 +16,25 @@ For this milestone, we have implemented in-network key/value store in a single P
 - `s1-runtime.json`
 
 ### Test scripts
-- `run_tests.sh`
-- `test1.sh`
-- `test2.sh`
-- `test3.sh`
+- `run_tests.sh`: Test runner that runs all tests below
+- `test1.sh`: Tests simple PUT and PUT requests without versioning
+- `test2.sh`: Tests additional versioned PUT and GET requests with versioning and edge cases
+- `test3.sh`: Tests versioned RANGE requests, and versioned SELECT requests with different predicates
 
 ## Run Test Script
 1. In a shell with the required VM image installed, navigate to `/DB_M1` directory and run:
     ```bash
     make
     ```
-2. Open a terminal for **h1** in the mininet environment 
+2. Open a terminal for **h1** in the mininet environment:
     ```bash
     xterm h1
     ```
-3. In the terminal for **h1**, make sure to give the tester executable permission by running:
+3. In the terminal for **h1**, make sure to give the test runner executable permission by running:
     ```bash
     chmod +x run_tests.sh
     ```
-4. Run tester:
+4. Run tests:
     ```bash
     ./run_tests.sh
     ```
@@ -54,7 +54,7 @@ For this milestone, we have implemented in-network key/value store in a single P
     ```bash
     make
     ```
-2. Open terminals for sender and receiver in the mininet environment 
+2. Open terminals for sender and receiver in the mininet environment:
     ```bash
     xterm h1 h1
     ```

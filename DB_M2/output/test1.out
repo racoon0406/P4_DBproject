@@ -1,0 +1,31 @@
+sniffing on eth0
+try to put(key= 1, value= 10) to switch 1
+try to put(key= 1, value= 10) to switch 3
+try to put(key= 2, value= 20) to switch 3
+try to put(key= 2, value= 20) to switch 1
+try to put(key= 3, value= 30) to switch 1
+try to put(key= 3, value= 30) to switch 3
+try to put(key= 4, value= 40) to switch 1
+try to put(key= 4, value= 40) to switch 3
+try to put(key= 1022, value= 102200) to switch 2
+try to put(key= 1022, value= 102200) to switch 3
+try to put(key= 1023, value= 102300) to switch 3
+try to put(key= 1023, value= 102300) to switch 2
+try to put(key= 1024, value= 102400) to switch 3
+try to put(key= 1024, value= 102400) to switch 2
+get value from switch 2
+102200
+get value from switch 2
+102300
+received a PONG from switch 1
+received a PONG from switch 2
+get value from switch 2
+102400
+get value from switch 1
+10
+get value from switch 1
+20
+get value from switch 1
+30
+get value from switch 1
+40

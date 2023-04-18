@@ -1,0 +1,95 @@
+sniffing on eth0
+try to put(key= 10, value= 100) to switch 3
+try to put(key= 10, value= 100) to switch 1
+try to put(key= 10, value= 101) to switch 3
+try to put(key= 10, value= 101) to switch 1
+try to put(key= 10, value= 102) to switch 3
+try to put(key= 10, value= 102) to switch 1
+try to put(key= 10, value= 103) to switch 3
+try to put(key= 10, value= 103) to switch 1
+try to put(key= 10, value= 104) to switch 3
+try to put(key= 10, value= 104) to switch 1
+try to put(key= 10, value= 105) to switch 1
+try to put(key= 10, value= 105) to switch 3
+try to put(key= 11, value= 110) to switch 3
+try to put(key= 11, value= 110) to switch 1
+try to put(key= 11, value= 111) to switch 3
+try to put(key= 11, value= 111) to switch 1
+try to put(key= 11, value= 112) to switch 3
+try to put(key= 11, value= 112) to switch 1
+try to put(key= 12, value= 120) to switch 3
+try to put(key= 12, value= 120) to switch 1
+try to put(key= 12, value= 121) to switch 3
+try to put(key= 12, value= 121) to switch 1
+try to put(key= 12, value= 122) to switch 3
+try to put(key= 12, value= 122) to switch 1
+try to put(key= 512, value= 51200) to switch 3
+try to put(key= 512, value= 51200) to switch 1
+try to put(key= 512, value= 51201) to switch 3
+try to put(key= 512, value= 51201) to switch 1
+try to put(key= 512, value= 51202) to switch 1
+try to put(key= 512, value= 51202) to switch 3
+try to put(key= 513, value= 51300) to switch 3
+try to put(key= 513, value= 51300) to switch 2
+try to put(key= 513, value= 51301) to switch 3
+try to put(key= 513, value= 51301) to switch 2
+try to put(key= 513, value= 51302) to switch 2
+try to put(key= 513, value= 51302) to switch 3
+try to put(key= 10, value= 106) to switch 1
+try to put(key= 10, value= 106) to switch 3
+try to put(key= 10, value= 107) to switch 1
+try to put(key= 10, value= 107) to switch 3
+get value from switch 1
+100
+get value from switch 1
+101
+get value from switch 1
+102
+get value from switch 1
+103
+get value from switch 1
+104
+get value from switch 1
+105
+get value from switch 1
+110
+received a PONG from switch 1
+get value from switch 1
+111
+received a PONG from switch 2
+get value from switch 1
+112
+get value from switch 1
+120
+get value from switch 1
+121
+get value from switch 1
+122
+get value from switch 1
+51200
+get value from switch 1
+51201
+get value from switch 1
+51202
+get value from switch 2
+51300
+get value from switch 2
+51301
+get value from switch 2
+51302
+get value from switch 1
+NULL
+get value from switch 1
+NULL
+get value from switch 1
+NULL
+get value from switch 1
+NULL
+get value from switch 1
+NULL
+received a PONG from switch 1
+get value from switch 1
+NULL
+received a PONG from switch 2
+get value from switch 2
+NULL

@@ -1,0 +1,97 @@
+sniffing on eth0
+[Client Alice]: get multiple values from switch 1
+['NULL', 'NULL', 21, 11, 'NULL']
+[Client Alice]: get multiple values from switch 1
+['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 40, 30, 20, 10]
+[Client Alice]: get multiple values from switch 1
+[200, 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL']
+received a PONG from switch 1
+received a PONG from switch 2
+[Client Alice]: get multiple values from switch 1
+[300, 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 220, 210]
+[Client Alice]: get multiple values from switch 1
+['NULL', 51200]
+[Client Alice]: get multiple values from switch 2
+['NULL', 'NULL', 'NULL']
+[Client Alice]: get multiple values from switch 2
+['NULL', 'NULL']
+[Client Alice]: get multiple values from switch 2
+['NULL', 'NULL', 'NULL']
+[Client Alice]: get multiple values from switch 1
+['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 40, 30, 20, 10, 'NULL']
+[Client Alice]: get multiple values from switch 1
+['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL']
+[Client Alice]: get multiple values from switch 1
+[210, 200]
+[Client Alice]: get multiple values from switch 1
+['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 21, 11, 'NULL']
+[Client Alice]: get multiple values from switch 1
+['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL']
+[Client Alice]: get multiple values from switch 1
+['NULL', 201]
+[Client Alice]: get multiple values from switch 1
+['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 40, 30, 20, 10, 'NULL']
+[Client Alice]: get multiple values from switch 1
+['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL']
+[Client Alice]: get multiple values from switch 1
+[220, 210, 200]
+[Client Alice]: get multiple values from switch 1
+['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 21, 11, 'NULL']
+[Client Alice]: get multiple values from switch 1
+['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL']
+received a PONG from switch 1
+received a PONG from switch 2
+[Client Alice]: get multiple values from switch 1
+['NULL', 'NULL', 201]
+[Client Alice]: get multiple values from switch 1
+[51201]
+[Client Alice]: get multiple values from switch 2
+['NULL']
+[Client Alice]: get multiple values from switch 2
+['NULL']
+[Client Bob]: get multiple values from switch 1
+['NULL', 'NULL', 21, 11, 'NULL']
+[Client Bob]: get multiple values from switch 1
+['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 40, 30, 20, 10]
+[Client Bob]: get multiple values from switch 1
+[200, 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL']
+[Client Bob]: get multiple values from switch 1
+[300, 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 220, 210]
+Error!!! Client Bob has no access to read the key(s)
+Error!!! Client Bob has no access to read the key(s)
+Error!!! Client Bob has no access to read the key(s)
+Error!!! Client Bob has no access to read the key(s)
+[Client Bob]: get multiple values from switch 1
+['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 40, 30, 20, 10, 'NULL']
+[Client Bob]: get multiple values from switch 1
+['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL']
+[Client Bob]: get multiple values from switch 1
+[210, 200]
+[Client Bob]: get multiple values from switch 1
+['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 21, 11, 'NULL']
+[Client Bob]: get multiple values from switch 1
+['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL']
+[Client Bob]: get multiple values from switch 1
+['NULL', 201]
+[Client Bob]: get multiple values from switch 1
+['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 40, 30, 20, 10, 'NULL']
+[Client Bob]: get multiple values from switch 1
+['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL']
+received a PONG from switch 1
+received a PONG from switch 2
+[Client Bob]: get multiple values from switch 1
+[220, 210, 200]
+[Client Bob]: get multiple values from switch 1
+['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 21, 11, 'NULL']
+[Client Bob]: get multiple values from switch 1
+['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL']
+[Client Bob]: get multiple values from switch 1
+['NULL', 'NULL', 201]
+Error!!! Client Bob has no access to read the key(s)
+Error!!! Client Bob has no access to read the key(s)
+[Client Bob]: get multiple values from switch 1
+[25500]
+[Client Bob]: get multiple values from switch 1
+[25600]
+[Client Bob]: get multiple values from switch 1
+[25601]

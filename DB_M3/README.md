@@ -31,18 +31,45 @@ The key range access for Alice and Bob is detailed below:
 - `s2-runtime.json`
 - `s3-runtime.json`
 
-### Test Scripts
-- TODO
+### Test scripts
+- `run_tests.sh`: Test runner that runs all tests below
+- `test1.sh`: Tests versioned PUT and GET requests with ACL, focusing on clients with different levels of key range read/write access
+- `test2.sh`: Tests versioned RANGE request with ACL, and versioned SELECT requests with ACL, focusing on clients with different levels of key range read/write access
 
-## Run Test Scripts
-TODO
+## Run Test Script
+1. In a shell with the required VM image installed, navigate to `/DB_M3` directory and run:
+    ```bash
+    make
+    ```
+2. Open a terminal for **h1** in the mininet environment: 
+    ```bash
+    xterm h1
+    ```
+3. In the terminal for **h1**, make sure to give the test runner executable permission by running:
+    ```bash
+    chmod +x run_tests.sh
+    ```
+4. Run tests:
+    ```bash
+    ./run_tests.sh
+    ```
+   It will execute all tests `test*.sh` and prints out a summary in the end.   
+
+5. Type `exit` to leave each xterm and the mininet environment. Then, to stop mininet:  
+    ```bash
+    make stop
+    ```
+   To delete all `.pcap` files, build files, and logs:  
+    ```bash
+    make clean
+    ```
 
 ## Run Manually
 1. In a shell with the required VM image installed, navigate to `/DB_M3` directory and run:
     ```bash
     make
     ```
-2. Open terminals for sender and receivers in the mininet environment 
+2. Open terminals for sender and receivers in the mininet environment: 
     ```bash
     xterm h1 h1
     ```

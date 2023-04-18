@@ -1,0 +1,87 @@
+sniffing on eth0
+[Client Alice]: try to put(key= 1, value= 10) to switch 1
+[Client Alice]: try to put(key= 1, value= 10) to switch 3
+[Client Alice]: try to put(key= 1, value= 11) to switch 3
+[Client Alice]: try to put(key= 1, value= 11) to switch 1
+[Client Alice]: try to put(key= 1, value= 12) to switch 3
+[Client Alice]: try to put(key= 1, value= 12) to switch 1
+[Client Alice]: try to put(key= 2, value= 20) to switch 1
+[Client Alice]: try to put(key= 2, value= 20) to switch 3
+[Client Alice]: try to put(key= 2, value= 21) to switch 1
+[Client Alice]: try to put(key= 2, value= 21) to switch 3
+[Client Alice]: try to put(key= 3, value= 30) to switch 1
+[Client Alice]: try to put(key= 3, value= 30) to switch 3
+[Client Alice]: try to put(key= 4, value= 40) to switch 1
+[Client Alice]: try to put(key= 4, value= 40) to switch 3
+[Client Alice]: try to put(key= 512, value= 51200) to switch 1
+[Client Alice]: try to put(key= 512, value= 51200) to switch 3
+[Client Alice]: try to put(key= 512, value= 51201) to switch 1
+[Client Alice]: try to put(key= 512, value= 51201) to switch 3
+Error!!! Client Alice has no access to write the key
+Error!!! Client Alice has no access to write the key
+Error!!! Client Alice has no access to write the key
+Error!!! Client Alice has no access to write the key
+[Client Bob]: try to put(key= 20, value= 200) to switch 1
+[Client Bob]: try to put(key= 20, value= 200) to switch 3
+[Client Bob]: try to put(key= 20, value= 201) to switch 1
+[Client Bob]: try to put(key= 20, value= 201) to switch 3
+[Client Bob]: try to put(key= 21, value= 210) to switch 1
+[Client Bob]: try to put(key= 21, value= 210) to switch 3
+[Client Bob]: try to put(key= 22, value= 220) to switch 1
+[Client Bob]: try to put(key= 22, value= 220) to switch 3
+[Client Bob]: try to put(key= 30, value= 300) to switch 1
+[Client Bob]: try to put(key= 30, value= 300) to switch 3
+[Client Bob]: try to put(key= 255, value= 25500) to switch 1
+[Client Bob]: try to put(key= 255, value= 25500) to switch 3
+[Client Bob]: try to put(key= 256, value= 25600) to switch 1
+[Client Bob]: try to put(key= 256, value= 25600) to switch 3
+[Client Bob]: try to put(key= 256, value= 25601) to switch 3
+[Client Bob]: try to put(key= 256, value= 25601) to switch 1
+Error!!! Client Bob has no access to write the key
+Error!!! Client Bob has no access to write the key
+Error!!! Client Bob has no access to write the key
+Error!!! Client Bob has no access to write the key
+[Client Alice]: get value from switch 1
+10
+[Client Alice]: get value from switch 1
+11
+[Client Alice]: get value from switch 1
+12
+[Client Alice]: get value from switch 1
+20
+[Client Alice]: get value from switch 1
+21
+[Client Alice]: get value from switch 1
+30
+[Client Alice]: get value from switch 1
+40
+[Client Alice]: get value from switch 1
+200
+received a PONG from switch 1
+[Client Alice]: get value from switch 1
+201
+received a PONG from switch 2
+[Client Alice]: get value from switch 1
+210
+[Client Alice]: get value from switch 1
+220
+[Client Alice]: get value from switch 1
+25600
+[Client Alice]: get value from switch 1
+51200
+[Client Alice]: get value from switch 1
+51201
+[Client Alice]: get value from switch 2
+NULL
+[Client Alice]: get value from switch 2
+NULL
+[Client Bob]: get value from switch 1
+10
+[Client Bob]: get value from switch 1
+11
+[Client Bob]: get value from switch 1
+12
+[Client Bob]: get value from switch 1
+40
+[Client Bob]: get value from switch 1
+25600

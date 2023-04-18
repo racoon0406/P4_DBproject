@@ -1,15 +1,29 @@
 sniffing on eth0
+get multiple values from switch 1
 [40, 30, 20, 10]
+get multiple values from switch 1
 ['NULL', 'NULL', 'NULL', 122, 112, 102]
+get multiple values from switch 2
 [102400, 102300]
+get multiple values from switch 2
 [102400, 102300, 102200]
+get multiple values from switch 1
 ['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 40, 30, 20, 10, 'NULL']
+get multiple values from switch 1
 [110, 100]
+get multiple values from switch 1
 ['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL']
+get multiple values from switch 1
 [111, 101]
+get multiple values from switch 1
 ['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 40, 30, 20, 10, 'NULL']
+get multiple values from switch 1
 [120, 110, 100]
+get multiple values from switch 1
 ['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL']
+get multiple values from switch 1
 [121, 111, 101]
+get multiple values from switch 1
 [51201]
+get multiple values from switch 2
 [51302]
