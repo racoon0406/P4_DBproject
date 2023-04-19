@@ -27,9 +27,9 @@ For this milestone, we have implemented key/value store partitions, load balanci
 
 ### Test Scripts and Output Files
 - `run_tests.sh`: Test runner that runs all tests below
-- `test1.sh`: Tests simple PUT and GET requests without versioning, while also evaluating load balancing and failure detection (PING/PONG) behavior
-- `test2.sh`: Tests versioned PUT and GET requests with edge cases, as well as load balancing and failure detection (PING/PONG) behavior
-- `test3.sh`: Tests versioned RANGE requests, versioned SELECT requests with diverse predicates, load balancing, and failure detection (PING/PONG) behavior
+- `test1.sh`: Tests basic PUT and GET requests without versioning, along with load balancing and PING/PONG-based failure detection mechanisms
+- `test2.sh`: Tests versioned PUT and GET requests with edge cases, as well as load balancing and PING/PONG-based failure detection mechanisms
+- `test3.sh`: Tests versioned RANGE requests, versioned SELECT requests with diverse predicates, load balancing, and PING/PONG-based failure detection mechanisms
 - `expected/`: Directory that contains the expected output files, `test*.out`, for each respective test
 - `output/`: Directory that stores the test outputs generated upon the completion of each test run
 

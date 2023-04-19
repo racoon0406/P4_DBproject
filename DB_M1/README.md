@@ -17,7 +17,7 @@ For this milestone, we have implemented in-network key/value store in a single P
 
 ### Test Scripts and Output Files
 - `run_tests.sh`: Test runner that runs all tests below
-- `test1.sh`: Tests simple PUT and PUT requests without versioning
+- `test1.sh`: Tests basic PUT and GET requests without versioning
 - `test2.sh`: Tests additional versioned PUT and GET requests with versioning and edge cases
 - `test3.sh`: Tests versioned RANGE requests, and versioned SELECT requests with different predicates
 - `expected/`: Directory that contains the expected output files, `test*.out`, for each respective test

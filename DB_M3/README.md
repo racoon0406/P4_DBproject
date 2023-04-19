@@ -13,10 +13,10 @@ The key range access for Alice and Bob is detailed below:
 ## Main Files Created
 
 ### P4 Programs
-- `DB_M2_s0.p4`
-- `DB_M2_s1.p4`
-- `DB_M2_s2.p4`
-- `DB_M2_s3.p4`
+- `DB_M3_s0.p4`
+- `DB_M3_s1.p4`
+- `DB_M3_s2.p4`
+- `DB_M3_s3.p4`
 
 ### Python Scripts
 - `query_h.py`
@@ -34,7 +34,7 @@ The key range access for Alice and Bob is detailed below:
 ### Test Scripts and Output Files
 - `run_tests.sh`: Test runner that runs all tests below
 - `test1.sh`: Tests versioned PUT and GET requests with ACL, focusing on clients with different levels of key range read/write access
-- `test2.sh`: Tests versioned RANGE request with ACL, and versioned SELECT requests with ACL, focusing on clients with different levels of key range read/write access
+- `test2.sh`: Tests versioned RANGE request with ACL, and versioned SELECT requests with ACL and various predicates, focusing on clients with different levels of key range read/write access
 - `expected/`: Directory that contains the expected output files, `test*.out`, for each respective test
 - `output/`: Directory that stores the test outputs generated upon the completion of each test run
 
